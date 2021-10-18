@@ -8,5 +8,11 @@ namespace Life_foods_api_csharp.Models
 {
     public class FoodApiContext : DbContext
     {
+        public FoodApiContext(DbContextOptions<FoodApiContext> options)
+    :       base(options)
+        {
+        }
     }
+
+    
 }
