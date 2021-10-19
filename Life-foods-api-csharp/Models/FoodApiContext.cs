@@ -17,6 +17,25 @@ namespace Life_foods_api_csharp.Models
         {
             modelBuilder.Entity<Food>()
                 .HasAlternateKey(f => f.Name);
+
+            modelBuilder.Entity<Food>()
+                .HasMany(x => x.Ingredients)
+                .WithMany(x => x.Foods)
+               .UsingEntity<FoodIngredient>(
+                j => j
+                    .HasOne(pt => pt.Ingredient)
+                    .WithMany(t => t.FoodIngredients)
+                    .HasForeignKey(pt => pt.IngredientId),
+                j => j
+                    .HasOne(pt => pt.Food)
+                    .WithMany(p => p.FoodIngredients)
+                    .HasForeignKey(pt => pt.FoodId),
+                j =>
+                {
+                    j.HasKey(t => new { t.FoodId, t.IngredientId });
+                });
+
+
             modelBuilder.Entity<Ingredient>()
                .HasAlternateKey(i => i.IngredientName);
             modelBuilder.Entity<Ingredient>().HasData(
@@ -30,21 +49,7 @@ namespace Life_foods_api_csharp.Models
 
         public virtual DbSet<Food> Foods { get; set; }
         public virtual DbSet<Ingredient> IngredientNames { get; set; }
-
-        //[Column(TypeName = "decimal(18,2)")]
-        //public decimal  { get; set; } = 0;
-
-        //[Column(TypeName = "decimal(18,2)")]
-        //public decimal  { get; set; } = 0;
-
-        //[Column(TypeName = "decimal(18,2)")]
-        //public decimal  { get; set; } = 0;
-
-        //[Column(TypeName = "decimal(18,2)")]
-        //public decimal  { get; set; } = 0;
-
-        //[Column(TypeName = "decimal(18,2)")]
-        //public decimal  { get; set; } = 0;
+        public virtual DbSet<FoodIngredient> FoodIngredients { get; set; }
 
     }
 }

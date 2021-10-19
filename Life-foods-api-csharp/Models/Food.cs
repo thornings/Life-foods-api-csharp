@@ -36,6 +36,10 @@ namespace Life_foods_api_csharp.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Energy { get; set; } = 0;
+
+        public ICollection<Ingredient> Ingredients { get; set; }
+
+        public List<FoodIngredient> FoodIngredients { get; set; }
     }
 }
 

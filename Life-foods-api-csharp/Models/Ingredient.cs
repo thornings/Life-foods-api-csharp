@@ -16,6 +16,10 @@ namespace Life_foods_api_csharp.Models
         [Required]
         [StringLength(200)]
         public string IngredientName { get; set; }
+
+        public ICollection<Food> Foods { get; set; }
+
+        public List<FoodIngredient> FoodIngredients { get; set; }
     }
 }
 
