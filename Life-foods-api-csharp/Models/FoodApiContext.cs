@@ -12,7 +12,15 @@ namespace Life_foods_api_csharp.Models
     :       base(options)
         {
         }
-    }
 
-    
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Food>()
+                .HasAlternateKey(f => f.Name)
+                .HasName("AlternateKey_Name");
+            //modelBuilder.Entity<Ingredient>()
+            //   .HasAlternateKey(i => i.IngredientName)
+            //   .HasName("AlternateKey_IngredientName");
+        }
+    }
 }
