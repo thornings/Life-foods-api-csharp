@@ -21,41 +21,42 @@ namespace Life_foods_api_csharp.Controller
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticationModel userParameters)
         {
-            var user = _userService.Authenticate(userParameters.Email, userParameters.Password);
+            //var user = _userService.Authenticate(userParameters.Email, userParameters.Password);
 
-            if (user == null)
-                return BadRequest(new { message = "Email or Password is incorrect" });
+            //if (user == null)
+            //    return BadRequest(new { message = "Email or Password is incorrect" });
 
-            return Ok(user);
+            return Ok("hejmeddig");
+            //return Ok(user);
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] AuthenticationModel model)
-        {
-            //if (ModelState.IsValid)
-            //{
-            //    var existingUser = await _userService.FindByEmailAsync(model.Email);
-            //    if (existingUser == null)
-            //    {
-            //        User user = new User();
-            //        user.UserName = model.Email;
-            //        user.Email = model.Email;
-            //        user.FirstName = model.FirstName;
-            //        user.LastName = model.LastName;
+        //[HttpPost("register")]
+        //public async Task<IActionResult> Register([FromBody] AuthenticationModel model)
+        //{
+        //    //if (ModelState.IsValid)
+        //    //{
+        //    //    var existingUser = await _userService.FindByEmailAsync(model.Email);
+        //    //    if (existingUser == null)
+        //    //    {
+        //    //        User user = new User();
+        //    //        user.UserName = model.Email;
+        //    //        user.Email = model.Email;
+        //    //        user.FirstName = model.FirstName;
+        //    //        user.LastName = model.LastName;
 
-            //        IdentityResult result = userManager.CreateAsync(user, model.Password).Result;
+        //    //        IdentityResult result = userManager.CreateAsync(user, model.Password).Result;
 
-            //        if (result.Succeeded)
-            //        {
-            //            await userManager.AddToRoleAsync(user, "User");
-            //            return Created("", model);
-            //        }
-            //    }
+        //    //        if (result.Succeeded)
+        //    //        {
+        //    //            await userManager.AddToRoleAsync(user, "User");
+        //    //            return Created("", model);
+        //    //        }
+        //    //    }
 
-            //}
+        //    //}
 
-            return BadRequest();
-        }
+        //    return BadRequest();
+        //}
 
     }
 }

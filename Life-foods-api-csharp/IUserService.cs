@@ -8,6 +8,6 @@ namespace Life_foods_api_csharp
 {
     interface IUserService
     {
-        User Authenticate(string email, string password);
+       // User Authenticate(string email, string password);
     }
 }

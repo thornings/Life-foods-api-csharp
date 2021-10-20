@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Life_foods_api_csharp.Models
 {
-    public class FoodApiContext : DbContext
+    public class FoodApiContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {
         public FoodApiContext(DbContextOptions<FoodApiContext> options)
     :       base(options)
@@ -15,6 +17,8 @@ namespace Life_foods_api_csharp.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Food>()
                 .HasAlternateKey(f => f.Name);
 
@@ -51,7 +55,6 @@ namespace Life_foods_api_csharp.Models
         public virtual DbSet<Ingredient> IngredientNames { get; set; }
         public virtual DbSet<FoodIngredient> FoodIngredients { get; set; }
 
-        public virtual DbSet<User> Users { get; set; }
-
+        public virtual DbSet<IdentityUser> Users { get; set; }
     }
 }
