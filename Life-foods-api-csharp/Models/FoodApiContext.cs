@@ -51,5 +51,7 @@ namespace Life_foods_api_csharp.Models
         public virtual DbSet<Ingredient> IngredientNames { get; set; }
         public virtual DbSet<FoodIngredient> FoodIngredients { get; set; }
 
+        public virtual DbSet<User> Users { get; set; }
+
     }
 }

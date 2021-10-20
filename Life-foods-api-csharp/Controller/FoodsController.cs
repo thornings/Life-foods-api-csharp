@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Life_foods_api_csharp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Life_foods_api_csharp.Controller
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class FoodsController : ControllerBase
     {
