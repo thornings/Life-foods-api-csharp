@@ -39,16 +39,18 @@ namespace Life_foods_api_csharp
 
             services.AddCors();
 
-            //var appSecretSettingsSection = Configuration.GetSection("AppSettings");
-            //services.Configure<SecretSettings>(appSecretSettingsSection);
+           var appSecretSettingsSection = Configuration.GetSection("AppSettings");
+           services.Configure<JWTSettings>(appSecretSettingsSection);
 
             services.AddDbContext<FoodApiContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FoodConnection")));
 
-            services.AddIdentity<User, Role>()
-               .AddEntityFrameworkStores<FoodApiContext>()
-               .AddDefaultTokenProviders();
+            services.AddIdentity<User, Role>(options => {
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddEntityFrameworkStores<FoodApiContext>()
+            .AddDefaultTokenProviders();
 
             //options.Password.RequireDigit = true;
             //options.Password.RequireLowercase = true;
@@ -58,33 +60,33 @@ namespace Life_foods_api_csharp
             //options.Password.RequiredUniqueChars = 1;
 
 
-            //var appSettings = appSecretSettingsSection.Get<SecretSettings>();
-            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var appSettings = appSecretSettingsSection.Get<JWTSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(x =>
-            //{
-            //    x.RequireHttpsMetadata = false;
-            //    x.SaveToken = true;
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false
-            //    };
-            //});
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             // configure DI for application services
             //  services.AddScoped<IUserService, UserService>();
 
 
             services.AddControllers();
-
+ 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Life_foods_api_csharp", Version = "v1" });

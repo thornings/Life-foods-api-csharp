@@ -9,7 +9,7 @@ namespace Life_foods_api_csharp.Models.Auth
         {
         }
 
-        public Guid Id { get; set; }
+        //public override Guid Id { get; set; }
 
         public string FirstName { get; set; }
 

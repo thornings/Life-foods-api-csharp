@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Life_foods_api_csharp.Models.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Life_foods_api_csharp.Models
 {
-    public class FoodApiContext : IdentityDbContext<IdentityUser, IdentityRole, string>
+    public class FoodApiContext : IdentityDbContext<User, Role, string>
     {
         public FoodApiContext(DbContextOptions<FoodApiContext> options)
-    :       base(options)
+    : base(options)
         {
         }
 
@@ -55,6 +52,7 @@ namespace Life_foods_api_csharp.Models
         public virtual DbSet<Ingredient> IngredientNames { get; set; }
         public virtual DbSet<FoodIngredient> FoodIngredients { get; set; }
 
-        public virtual DbSet<IdentityUser> Users { get; set; }
+        //[NotMapped]
+        public virtual DbSet<User> Users { get; set; }
     }
 }
