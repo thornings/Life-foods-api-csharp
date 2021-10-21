@@ -1,25 +1,18 @@
-using Life_foods_api_csharp.Models;
-using Life_foods_api_csharp.Models.Auth;
-using Microsoft.AspNetCore.Authentication;
+using Life_foods_api_csharp.Models.V1;
+using Life_foods_api_csharp.Models.V1.Auth;
+using Life_foods_api_csharp.Services;
+using Life_foods_api_csharp.Services.V1;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Life_foods_api_csharp
 {
@@ -35,9 +28,7 @@ namespace Life_foods_api_csharp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           
-
-            services.AddCors();
+           services.AddCors();
 
            var appSecretSettingsSection = Configuration.GetSection("AppSettings");
            services.Configure<JWTSettings>(appSecretSettingsSection);
@@ -82,7 +73,7 @@ namespace Life_foods_api_csharp
             });
 
             // configure DI for application services
-            //  services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IFoodsService, FoodsService>();
 
 
             services.AddControllers();

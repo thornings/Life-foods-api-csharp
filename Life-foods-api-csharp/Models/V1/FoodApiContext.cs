@@ -1,9 +1,9 @@
-﻿using Life_foods_api_csharp.Models.Auth;
+﻿using Life_foods_api_csharp.Models.V1.Auth;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Life_foods_api_csharp.Models
+namespace Life_foods_api_csharp.Models.V1
 {
     public class FoodApiContext : IdentityDbContext<User, Role, string>
     {
@@ -36,9 +36,13 @@ namespace Life_foods_api_csharp.Models
                     j.HasKey(t => new { t.FoodId, t.IngredientId });
                 });
 
+                SeedIngredientNames(modelBuilder);
+        }
 
+        private static void SeedIngredientNames(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Ingredient>()
-               .HasAlternateKey(i => i.IngredientName);
+              .HasAlternateKey(i => i.IngredientName);
             modelBuilder.Entity<Ingredient>().HasData(
                 new { IngredientId = 1, IngredientName = "Polyols" },
                 new { IngredientId = 2, IngredientName = "Salatrim" },
@@ -52,7 +56,6 @@ namespace Life_foods_api_csharp.Models
         public virtual DbSet<Ingredient> IngredientNames { get; set; }
         public virtual DbSet<FoodIngredient> FoodIngredients { get; set; }
 
-        //[NotMapped]
         public virtual DbSet<User> Users { get; set; }
     }
 }

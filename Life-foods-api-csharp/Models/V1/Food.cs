@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Life_foods_api_csharp.Models
+namespace Life_foods_api_csharp.Models.V1
 {
     public class Food
     {

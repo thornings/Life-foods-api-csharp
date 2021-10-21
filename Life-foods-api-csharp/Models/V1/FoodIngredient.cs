@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Life_foods_api_csharp.Models
+﻿
+namespace Life_foods_api_csharp.Models.V1
 {
     public class FoodIngredient
     {
@@ -15,9 +10,5 @@ namespace Life_foods_api_csharp.Models
             public int IngredientId { get; set; }
 
             public Ingredient Ingredient { get; set; }
-
-
-
-            
     }
 }

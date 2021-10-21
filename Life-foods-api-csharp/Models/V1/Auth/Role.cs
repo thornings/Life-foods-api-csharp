@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
 
-namespace Life_foods_api_csharp.Models.Auth
+namespace Life_foods_api_csharp.Models.V1.Auth
 {
     public class Role : IdentityRole
     {

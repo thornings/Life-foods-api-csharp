@@ -1,5 +1,4 @@
-﻿using Life_foods_api_csharp.Models;
-using Life_foods_api_csharp.Models.Auth;
+﻿using Life_foods_api_csharp.Models.V1.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -22,14 +20,12 @@ namespace Life_foods_api_csharp.Controller
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-       // private IUserService _userService;
         private UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
 
         public UsersController(UserManager<User> userManager, IConfiguration configuration)
         {
-        //    _userService = userService;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -51,29 +47,9 @@ namespace Life_foods_api_csharp.Controller
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
 
-                var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+                var authClaims = BuildAuthClaims(user, userRoles);
 
-                foreach (var userRole in userRoles)
-                {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-                }
-
-                var appSecretSettingsSection = _configuration.GetSection("AppSettings");
-                var appSettings = appSecretSettingsSection.Get<JWTSettings>();
-                var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret));
-
-                var token = new JwtSecurityToken(
-                    issuer: appSettings.ValidIssuer,
-                    audience: appSettings.ValidAudience,
-                    expires: DateTime.Now.AddHours(10),
-                    claims: authClaims,
-                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                    );
+                JwtSecurityToken token = BuildJWTToken(authClaims);
 
                 return Ok(new
                 {
@@ -83,6 +59,41 @@ namespace Life_foods_api_csharp.Controller
             }
 
             return BadRequest(new { message = "Email or Password incorrect" });
+
+            
+        }
+
+        private List<Claim> BuildAuthClaims(User user, IList<string> userRoles)
+        {
+            var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            return authClaims;
+        }
+
+        private JwtSecurityToken BuildJWTToken(List<Claim> authClaims)
+        {
+            var appSecretSettingsSection = _configuration.GetSection("AppSettings");
+            var appSettings = appSecretSettingsSection.Get<JWTSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret));
+
+            var token = new JwtSecurityToken(
+                issuer: appSettings.ValidIssuer,
+                audience: appSettings.ValidAudience,
+                expires: DateTime.Now.AddHours(10),
+                claims: authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+            return token;
         }
 
         [HttpPost]

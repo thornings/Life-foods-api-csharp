@@ -1,10 +1,6 @@
 ﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Life_foods_api_csharp.Models
+namespace Life_foods_api_csharp.Models.V1.Auth
 {
     public class JWTSettings
     {

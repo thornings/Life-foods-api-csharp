@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Life_foods_api_csharp.Models;
 using Microsoft.AspNetCore.Authorization;
+using Life_foods_api_csharp.Models.V1;
+using Life_foods_api_csharp.Services.V1;
+using Newtonsoft.Json;
 
-namespace Life_foods_api_csharp.Controller
+namespace Life_foods_api_csharp.Controller.V1
 {
     [Route("api/[controller]")]
     [Authorize]
@@ -16,17 +17,21 @@ namespace Life_foods_api_csharp.Controller
     public class FoodsController : ControllerBase
     {
         private readonly FoodApiContext _context;
+        private readonly IFoodsService _foodsService;
 
-        public FoodsController(FoodApiContext context)
+        public FoodsController(FoodApiContext context, IFoodsService foodsService)
         {
             _context = context;
+            _foodsService = foodsService;
         }
 
         // GET: api/Foods
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Food>>> GetFoods()
+        public IActionResult GetFoods([FromQuery] FoodParameters foodParams)
         {
-            return await _context.Foods.ToListAsync();
+            var foods = _foodsService.GetAllFoods(foodParams);          
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(foods.PagedInformation()));
+            return Ok(foods);
         }
 
         // GET: api/Foods/5

@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Life_foods_api_csharp.Models.Auth
+namespace Life_foods_api_csharp.Models.V1.Auth
 {
     public class RegisterModel 
     {
